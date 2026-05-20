@@ -1,0 +1,42 @@
+Oauth flow
+1. call authcode api - sign in with google, github, facebook
+2. response one authcode res 
+	{
+		authcode url : 
+		state : 
+		code verifier :
+		tempToken : 
+	}
+3. take authcode url and redirect to it.
+4. google will redirect with auth code (redirect url will be ui endpoint).
+5. ui will take authcode, state from redirected url of google
+6. ui will call oauth token api /google /github
+	{
+		authcode :
+		tempToken :
+		redirect state :
+		our state :
+		code verfier :
+	}
+7. oauth token api will internally call provider(google,github,facebook) token api with authcode provided in payload
+8. in response of token api we will get the access token of the provider
+9. then with that access token we will call the userinfo api to get user details.
+10. if user exits then just generate access token and refresh token
+11. if user does not exist then register him and the genrate the access and refrsh token
+
+
+Login flow ;
+1. user will enter the username and password and call our token api
+2. then we will validate and generate the access token and refresh token from the backend
+3. we will store the access token and refersh token in the cookies but without httpOnly attribute from ui
+4. whenever we will call the autheticated api of our app we will fetch the access token from the cookies and add it in authorisation bearer header 
+5. and if any api gives 401 then we will extract refersh from the cookies 
+6. and then call the refresh token api to get new access token and refresh token and store it in the cookies again
+7. If refresh token is also invalid or expired then we will redirect user to the login page
+
+
+
+
+		
+		
+		
